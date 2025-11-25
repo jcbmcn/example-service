@@ -1,8 +1,10 @@
-ARG TARGETPLATFORM
+ARG APP_COLOR=blue
+
 FROM --platform=$TARGETPLATFORM node:20-alpine AS build
 WORKDIR /app
 
-ENV APP_COLOR=blue
+ARG APP_COLOR
+ENV APP_COLOR=${APP_COLOR}
 ENV OTEL_SERVICE_NAME=example-service
 ENV OTEL_SERVICE_NAMESPACE=example-app
 
@@ -18,7 +20,8 @@ FROM --platform=$TARGETPLATFORM node:20-alpine
 WORKDIR /app
 
 ENV NODE_ENV=production
-ENV APP_COLOR=blue
+ARG APP_COLOR
+ENV APP_COLOR=${APP_COLOR}
 
 COPY --from=build /app/dist ./dist
 COPY --from=build /app/server.js ./server.js
