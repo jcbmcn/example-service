@@ -4,7 +4,9 @@ services:
   blue:
     build:
       context: .
-      dockerfile: Dockerfile.blue
+      dockerfile: Dockerfile
+      args:
+        - APP_COLOR=blue
     image: supernova:blue
     container_name: supernova-blue
     ports:
@@ -13,7 +15,9 @@ services:
   green:
     build:
       context: .
-      dockerfile: Dockerfile.green
+      dockerfile: Dockerfile
+      args:
+        - APP_COLOR=green
     image: supernova:green
     container_name: supernova-green
     ports:

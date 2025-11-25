@@ -22,7 +22,9 @@ jobs:
       - uses: docker/build-push-action@v6
         with:
           context: .
-          file: Dockerfile.blue  
+          file: Dockerfile
+          build-args: |
+            APP_COLOR=blue
           push: true
           tags: |
             ghcr.io/${{ github.repository }}:blue
@@ -43,6 +45,8 @@ jobs:
       - uses: docker/build-push-action@v6
         with:
           context: .
-          file: Dockerfile.green 
+          file: Dockerfile
+          build-args: |
+            APP_COLOR=green
           push: true
           tags: ghcr.io/${{ github.repository }}:green
