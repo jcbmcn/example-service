@@ -1,0 +1,20 @@
+version: "3.9"
+
+services:
+  blue:
+    build:
+      context: .
+      dockerfile: Dockerfile.blue
+    image: supernova:blue
+    container_name: supernova-blue
+    ports:
+      - "3001:3000"
+
+  green:
+    build:
+      context: .
+      dockerfile: Dockerfile.green
+    image: supernova:green
+    container_name: supernova-green
+    ports:
+      - "3002:3000"

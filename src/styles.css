@@ -1,0 +1,136 @@
+:root {
+  font-family: 'Helvetica Neue', Arial, sans-serif;
+  color: #e6eefb;
+  background: radial-gradient(circle at 20% 20%, #0f1d33, #050b15 50%);
+  line-height: 1.6;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+}
+
+.page {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 32px 20px 48px;
+}
+
+.hero h1 {
+  margin: 0 0 8px;
+  letter-spacing: 0.5px;
+}
+
+.hero p {
+  margin: 0 0 24px;
+  color: #c6d2ea;
+}
+
+.card {
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 16px;
+  padding: 20px;
+  display: grid;
+  grid-template-columns: 1fr 1.4fr;
+  gap: 16px;
+  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.35);
+}
+
+.card.blue {
+  border-color: rgba(64, 156, 255, 0.5);
+  box-shadow: 0 18px 40px rgba(64, 156, 255, 0.18);
+}
+
+.card.green {
+  border-color: rgba(57, 255, 160, 0.4);
+  box-shadow: 0 18px 40px rgba(57, 255, 160, 0.18);
+}
+
+.meta {
+  display: grid;
+  gap: 6px;
+  align-content: start;
+}
+
+.label {
+  text-transform: uppercase;
+  letter-spacing: 1.2px;
+  font-size: 12px;
+  margin: 0;
+  color: #95a5d4;
+}
+
+.value {
+  font-size: 42px;
+  margin: -6px 0 8px;
+  font-weight: 700;
+}
+
+.message {
+  margin: 6px 0;
+  color: #d7e3ff;
+  opacity: 0.9;
+}
+
+.pill {
+  display: inline-flex;
+  align-items: center;
+  width: fit-content;
+  padding: 4px 10px;
+  border-radius: 999px;
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.pill.ready {
+  background: rgba(57, 255, 160, 0.18);
+  color: #75ffba;
+}
+
+.pill.loading {
+  background: rgba(255, 191, 71, 0.18);
+  color: #ffda90;
+}
+
+.pill.error {
+  background: rgba(255, 99, 132, 0.18);
+  color: #ffb4c4;
+}
+
+.image-frame {
+  background: radial-gradient(circle at 30% 30%, rgba(255, 255, 255, 0.1), rgba(5, 11, 21, 0.8));
+  border-radius: 12px;
+  padding: 10px;
+  display: grid;
+  place-items: center;
+  min-height: 320px;
+}
+
+.image-frame img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 12px;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.45);
+}
+
+.error {
+  color: #ffb4c4;
+  padding: 12px;
+  border-radius: 8px;
+  background: rgba(255, 99, 132, 0.1);
+}
+
+.footer {
+  margin-top: 22px;
+  color: #95a5d4;
+  font-size: 14px;
+}
+
+@media (max-width: 768px) {
+  .card {
+    grid-template-columns: 1fr;
+  }
+}

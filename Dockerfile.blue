@@ -1,0 +1,35 @@
+ARG TARGETPLATFORM
+FROM --platform=$TARGETPLATFORM node:20-alpine AS build
+WORKDIR /app
+
+ENV APP_COLOR=blue
+ENV OTEL_SERVICE_NAME=example-service
+ENV OTEL_SERVICE_NAMESPACE=example-app
+
+COPY package.json vite.config.js index.html 404.html server.js tracing.js ./
+COPY src ./src
+COPY assets/blue_supernova.png assets/green_supernova.png assets/404.png ./
+COPY .npmrc ./
+
+RUN npm install --legacy-peer-deps
+RUN npm run build
+
+FROM --platform=$TARGETPLATFORM node:20-alpine
+WORKDIR /app
+
+ENV NODE_ENV=production
+ENV APP_COLOR=blue
+
+COPY --from=build /app/dist ./dist
+COPY --from=build /app/server.js ./server.js
+COPY --from=build /app/tracing.js ./tracing.js
+COPY --from=build /app/package.json ./package.json
+COPY --from=build /app/.npmrc ./.npmrc
+COPY --from=build /app/node_modules ./node_modules
+COPY --from=build /app/blue_supernova.png ./blue_supernova.png
+COPY --from=build /app/green_supernova.png ./green_supernova.png
+COPY --from=build /app/404.png ./404.png
+COPY --from=build /app/404.html ./404.html
+
+EXPOSE 3000
+CMD ["node", "server.js"]
