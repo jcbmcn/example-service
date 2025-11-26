@@ -1,3 +1,10 @@
+## [1.3.2](https://github.com/jcbmcn/example-service/compare/v1.3.1...v1.3.2) (2025-11-26)
+
+
+### Bug Fixes
+
+* **fs-stat:** fix error reported in signoz for fs stat ([87ab047](https://github.com/jcbmcn/example-service/commit/87ab047f4f6ddf6a21417733bbbf31bcd2200f4b))
+
 ## [1.3.1](https://github.com/jcbmcn/example-service/compare/v1.3.0...v1.3.1) (2025-11-26)
 
 
