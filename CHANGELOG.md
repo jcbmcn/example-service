@@ -1,3 +1,12 @@
+## [1.1.7](https://github.com/jcbmcn/example-service/compare/v1.1.6...v1.1.7) (2025-11-26)
+
+
+### Bug Fixes
+
+* **release:** streamline release creation by checking for existing release ([fcfbf04](https://github.com/jcbmcn/example-service/commit/fcfbf0492c88d94e1cc53b9946f07353a7523bbc))
+
+
+
 ## [1.1.6](https://github.com/jcbmcn/example-service/compare/v1.1.5...v1.1.6) (2025-11-26)
 
 
@@ -31,15 +40,6 @@
 ### Bug Fixes
 
 * **publish.yaml:** replace release-action with gh CLI for creating/updating releases ([6ade463](https://github.com/jcbmcn/example-service/commit/6ade4639a776fa87d36d79055c840cf5920df3a1))
-
-
-
-## [1.1.2](https://github.com/jcbmcn/example-service/compare/v1.1.1...v1.1.2) (2025-11-26)
-
-
-### Bug Fixes
-
-* **publish.yaml:** add token to checkout step for authentication ([6ac0cf2](https://github.com/jcbmcn/example-service/commit/6ac0cf27bc43fd7726f6a15f88b3a5309780f680))
 
 
 
