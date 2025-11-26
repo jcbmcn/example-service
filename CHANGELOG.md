@@ -1,3 +1,10 @@
+# [1.2.0](https://github.com/jcbmcn/example-service/compare/v1.1.8...v1.2.0) (2025-11-26)
+
+
+### Features
+
+* **publish.yaml:** roll new version ([ea277be](https://github.com/jcbmcn/example-service/commit/ea277befe9e483f884fa150cd75a952cd2b837a5))
+
 ## [1.1.8](https://github.com/jcbmcn/example-service/compare/v1.1.7...v1.1.8) (2025-11-26)
 
 
