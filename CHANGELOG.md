@@ -1,3 +1,12 @@
+## [1.1.2](https://github.com/jcbmcn/example-service/compare/v1.1.1...v1.1.2) (2025-11-26)
+
+
+### Bug Fixes
+
+* **publish.yaml:** add token to checkout step for authentication ([6ac0cf2](https://github.com/jcbmcn/example-service/commit/6ac0cf27bc43fd7726f6a15f88b3a5309780f680))
+
+
+
 ## [1.1.1](https://github.com/jcbmcn/example-service/compare/v1.1.0...v1.1.1) (2025-11-26)
 
 
