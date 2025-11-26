@@ -1,3 +1,11 @@
+## [1.1.8](https://github.com/jcbmcn/example-service/compare/v1.1.7...v1.1.8) (2025-11-26)
+
+
+### Bug Fixes
+
+* **publish.yaml:** refactor release job to use semantic-release and streamline steps ([719277d](https://github.com/jcbmcn/example-service/commit/719277db9fd9b90f39a547bac837522ef92d74fb))
+* **releaserc:** add initial configuration for semantic-release plugins ([db4b74a](https://github.com/jcbmcn/example-service/commit/db4b74a2b8414487437e875e2ae84c6ceda6d8ed))
+
 ## [1.1.7](https://github.com/jcbmcn/example-service/compare/v1.1.6...v1.1.7) (2025-11-26)
 
 
@@ -40,6 +48,3 @@
 ### Bug Fixes
 
 * **publish.yaml:** replace release-action with gh CLI for creating/updating releases ([6ade463](https://github.com/jcbmcn/example-service/commit/6ade4639a776fa87d36d79055c840cf5920df3a1))
-
-
-
