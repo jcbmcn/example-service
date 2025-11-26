@@ -1,3 +1,10 @@
+## [1.2.4](https://github.com/jcbmcn/example-service/compare/v1.2.3...v1.2.4) (2025-11-26)
+
+
+### Bug Fixes
+
+* **release.yaml:** update version determination to fetch latest release from GitHub API ([7720386](https://github.com/jcbmcn/example-service/commit/7720386e7228bd31d1a959e2444b117423c19935))
+
 ## [1.2.3](https://github.com/jcbmcn/example-service/compare/v1.2.2...v1.2.3) (2025-11-26)
 
 
