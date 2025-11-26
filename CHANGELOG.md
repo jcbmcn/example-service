@@ -1,3 +1,10 @@
+## [1.2.3](https://github.com/jcbmcn/example-service/compare/v1.2.2...v1.2.3) (2025-11-26)
+
+
+### Bug Fixes
+
+* **release.yaml:** update Docker build process to include image prefix and push to GHCR ([5cd338e](https://github.com/jcbmcn/example-service/commit/5cd338ebf017b3af19afc5f53c96509a7cd3ea77))
+
 ## [1.2.2](https://github.com/jcbmcn/example-service/compare/v1.2.1...v1.2.2) (2025-11-26)
 
 
