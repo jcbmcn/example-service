@@ -3,6 +3,14 @@
 
 ### Bug Fixes
 
+* **publish.yaml:** roll fix version ([665f8c0](https://github.com/jcbmcn/example-service/commit/665f8c029a548f9d3c442f97c794cb4fbcf0b40e))
+* **publish.yaml:** update version and tag outputs in release job ([a6ab268](https://github.com/jcbmcn/example-service/commit/a6ab268c439926d854307292d74ab58701afd154))
+
+## [1.2.1](https://github.com/jcbmcn/example-service/compare/v1.2.0...v1.2.1) (2025-11-26)
+
+
+### Bug Fixes
+
 * **publish.yaml:** update version and tag outputs in release job ([a6ab268](https://github.com/jcbmcn/example-service/commit/a6ab268c439926d854307292d74ab58701afd154))
 
 # [1.2.0](https://github.com/jcbmcn/example-service/compare/v1.1.8...v1.2.0) (2025-11-26)
