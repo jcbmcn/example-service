@@ -8,18 +8,32 @@ A small blue/green React + Express demo that serves a themed static build, expos
 
 ![banner_image](assets/banner.png)
 
+## Purpose
+- Practice blue/green and canary rollouts in Kubernetes by deploying color-tagged images and gradually shifting a percentage of traffic between them.
+- Validate ingress/service routing while observing live traffic splits and error budgets.
+- Collect latency/error metrics and traces via SigNoz (OTLP export enabled in `tracing.js`).
+- Provide a lightweight sandbox to test deployment strategies and observability wiring before using them on production workloads.
+
 ## Endpoints
 - `/` serves the built React app for the configured color.
 - `/health` returns `{"status":"ok","color":"<blue|green>"}`.
 - `/version` echoes the color for quick probes.
 - `/blue` and `/green` serve the respective supernova image (404 if the build color does not match).
 
-## Quickstart (Node)
-```bash
-npm ci
-npm run dev        # Vite dev server
-PORT=3000 APP_COLOR=green npm start  # serve built app with green theme
-```
+## Quickstart
+- Node (local):
+  ```bash
+  npm ci
+  npm run dev        # Vite dev server
+  PORT=3000 APP_COLOR=green npm start  # serve built app with green theme
+  ```
+- Docker Compose (blue on :3001, green on :3002):
+  ```bash
+  docker-compose up --build
+  # Then visit:
+  # http://localhost:3001/health, /version, /blue
+  # http://localhost:3002/health, /version, /green
+  ```
 
 ## Containers
 - Build locally: `docker build -t example-service:blue --build-arg APP_COLOR=blue .`
