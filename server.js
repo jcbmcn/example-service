@@ -18,8 +18,6 @@ const notFoundPage = path.join(__dirname, '404.html');
 
 const imageForColor = () => images[color] || images.blue;
 
-app.use(express.static(path.join(__dirname, 'dist')));
-
 app.get('/health', (req, res) => {
   res.json({ status: 'ok', color });
 });
@@ -45,6 +43,9 @@ app.get('/green', (req, res) => {
 app.get('/404.png', (req, res) => {
   res.sendFile(notFoundImage);
 });
+
+// Serve static assets after API routes so /health et al aren't statted in dist
+app.use(express.static(path.join(__dirname, 'dist')));
 
 app.use((req, res) => {
   const acceptsHtml = (req.get('accept') || '').toLowerCase().includes('text/html');
