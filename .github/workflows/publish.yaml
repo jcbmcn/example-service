@@ -6,7 +6,24 @@ on:
   workflow_dispatch:
 
 jobs:
+  version:
+    runs-on: ubuntu-24.04
+    outputs:
+      version: ${{ steps.changelog.outputs.version }}
+      tag: ${{ steps.changelog.outputs.tag }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - id: changelog
+        uses: TriPSs/conventional-changelog-action@v5
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          skip-commit: true
+          skip-tag: true
+
   build-blue:
+    needs: version
     runs-on: ubuntu-24.04
     permissions:
       contents: read
@@ -27,9 +44,11 @@ jobs:
             APP_COLOR=blue
           push: true
           tags: |
+            ghcr.io/${{ github.repository }}:blue-${{ needs.version.outputs.version }}
             ghcr.io/${{ github.repository }}:blue
             ghcr.io/${{ github.repository }}:latest
   build-green:
+    needs: version
     runs-on: ubuntu-24.04
     permissions:
       contents: read
@@ -49,4 +68,23 @@ jobs:
           build-args: |
             APP_COLOR=green
           push: true
-          tags: ghcr.io/${{ github.repository }}:green
+          tags: |
+            ghcr.io/${{ github.repository }}:green-${{ needs.version.outputs.version }}
+            ghcr.io/${{ github.repository }}:green
+
+  release:
+    needs: [version, build-blue, build-green]
+    runs-on: ubuntu-24.04
+    permissions:
+      contents: write
+    steps:
+      - name: Create/update release
+        uses: ncipollo/release-action@v1
+        with:
+          tag: ${{ needs.version.outputs.tag }}
+          name: ${{ needs.version.outputs.tag }}
+          allowUpdates: true
+          body: |
+            Images published:
+            - ghcr.io/${{ github.repository }}:blue-${{ needs.version.outputs.version }}
+            - ghcr.io/${{ github.repository }}:green-${{ needs.version.outputs.version }}
