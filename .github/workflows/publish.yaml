@@ -9,8 +9,8 @@ jobs:
   release:
     runs-on: ubuntu-latest
     outputs:
-      version: ${{ steps.semantic.outputs.new_release_version }}
-      tag: ${{ steps.semantic.outputs.new_release_git_tag }}
+      version: ${{ steps.tag.outputs.version }}
+      tag: ${{ steps.tag.outputs.tag }}
     steps:
       - uses: actions/checkout@v3
         with:
@@ -30,11 +30,17 @@ jobs:
             @semantic-release/commit-analyzer \
             @semantic-release/release-notes-generator \
             conventional-changelog-conventionalcommits
-      - id: semantic
-        name: Run semantic-release
+      - name: Run semantic-release
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: npx semantic-release
+      - id: tag
+        name: Get version from tag
+        run: |
+          TAG=$(git describe --tags --abbrev=0 2>/dev/null || echo "")
+          VERSION=${TAG#v}
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
+          echo "tag=$TAG" >> $GITHUB_OUTPUT
 
   build-blue:
     needs: release
@@ -62,7 +68,7 @@ jobs:
             ghcr.io/${{ github.repository }}:blue-${{ needs.release.outputs.version }}
             ghcr.io/${{ github.repository }}:blue
             ghcr.io/${{ github.repository }}:latest
-            
+
   build-green:
     needs: release
     if: needs.release.outputs.version
