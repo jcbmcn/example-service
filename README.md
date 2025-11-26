@@ -6,6 +6,8 @@
 
 A small blue/green React + Express demo that serves a themed static build, exposes health/version endpoints, and emits OpenTelemetry traces. Docker images are color-specific via `APP_COLOR`.
 
+![banner_image](assets/banner.png)
+
 ## Endpoints
 - `/` serves the built React app for the configured color.
 - `/health` returns `{"status":"ok","color":"<blue|green>"}`.
