@@ -1,3 +1,10 @@
+# [1.3.0](https://github.com/jcbmcn/example-service/compare/v1.2.4...v1.3.0) (2025-11-26)
+
+
+### Features
+
+* add new readme ([909d253](https://github.com/jcbmcn/example-service/commit/909d253800a93494348fe325d8af9e02b74ea0a7))
+
 ## [1.2.4](https://github.com/jcbmcn/example-service/compare/v1.2.3...v1.2.4) (2025-11-26)
 
 
