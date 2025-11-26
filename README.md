@@ -1,4 +1,4 @@
-# example-service
+# Supernova example-service
 
 [![Release](https://github.com/jcbmcn/example-service/actions/workflows/release.yaml/badge.svg)](https://github.com/jcbmcn/example-service/actions/workflows/release.yaml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
