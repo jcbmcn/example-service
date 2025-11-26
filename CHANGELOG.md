@@ -1,4 +1,13 @@
-# 1.1.0 (2025-11-26)
+## [1.1.1](https://github.com/jcbmcn/example-service/compare/v1.1.0...v1.1.1) (2025-11-26)
+
+
+### Bug Fixes
+
+* **publish.yaml:** add token to release action for authentication ([15f890b](https://github.com/jcbmcn/example-service/commit/15f890babed9ca5dda8cd758c17b6f1119d3adfe))
+
+
+
+# [1.1.0](https://github.com/jcbmcn/example-service/compare/99c0ef303c52e64e90caa0269a88e6b3406a5c4a...v1.1.0) (2025-11-26)
 
 
 ### Bug Fixes
