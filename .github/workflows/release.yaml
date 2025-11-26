@@ -9,6 +9,7 @@ permissions:
   contents: write
   issues: write
   pull-requests: write
+  packages: write
 
 jobs:
   release:
@@ -53,8 +54,48 @@ jobs:
       - name: Determine release version
         run: echo "VERSION=$(git describe --tags --abbrev=0)" >> $GITHUB_ENV
 
-      - name: Build blue image
-        run: docker build --build-arg APP_COLOR=blue -t example-service:blue -t example-service:blue-${VERSION} .
+      - name: Set image prefix
+        run: |
+          OWNER=$(echo "${GITHUB_REPOSITORY_OWNER}" | tr '[:upper:]' '[:lower:]')
+          echo "IMAGE_PREFIX=ghcr.io/${OWNER}/example-service" >> $GITHUB_ENV
 
-      - name: Build green image
-        run: docker build --build-arg APP_COLOR=green -t example-service:green -t example-service:green-${VERSION} .
+      - name: Log in to GHCR
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.repository_owner }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Build and push blue image
+        uses: docker/build-push-action@v5
+        with:
+          push: true
+          tags: |
+            ${{ env.IMAGE_PREFIX }}:blue
+            ${{ env.IMAGE_PREFIX }}:blue-${{ env.VERSION }}
+          build-args: |
+            APP_COLOR=blue
+
+      - name: Build and push green image
+        uses: docker/build-push-action@v5
+        with:
+          push: true
+          tags: |
+            ${{ env.IMAGE_PREFIX }}:green
+            ${{ env.IMAGE_PREFIX }}:green-${{ env.VERSION }}
+          build-args: |
+            APP_COLOR=green
+
+      - name: Append images to release notes
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          RELEASE_DATA=$(curl -sSf -H "Authorization: Bearer ${GH_TOKEN}" -H "Accept: application/vnd.github+json" \
+            "https://api.github.com/repos/${GITHUB_REPOSITORY}/releases/tags/${VERSION}")
+          RELEASE_ID=$(echo "${RELEASE_DATA}" | jq -r '.id')
+          RELEASE_BODY=$(echo "${RELEASE_DATA}" | jq -r '.body // ""')
+          IMAGES_SECTION=$'Images published:\n- '"${IMAGE_PREFIX}:blue"$'\n- '"${IMAGE_PREFIX}:blue-${VERSION}"$'\n- '"${IMAGE_PREFIX}:green"$'\n- '"${IMAGE_PREFIX}:green-${VERSION}"
+          UPDATED_BODY="$(printf "%s\n\n%s\n" "${RELEASE_BODY}" "${IMAGES_SECTION}")"
+          curl -sSf -X PATCH -H "Authorization: Bearer ${GH_TOKEN}" -H "Accept: application/vnd.github+json" \
+            "https://api.github.com/repos/${GITHUB_REPOSITORY}/releases/${RELEASE_ID}" \
+            -d "$(jq -n --arg body "${UPDATED_BODY}" '{body: $body}')"
