@@ -36,3 +36,4 @@ COPY --from=build /app/404.html ./404.html
 
 EXPOSE 3000
 CMD ["node", "server.js"]
+
