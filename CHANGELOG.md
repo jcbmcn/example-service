@@ -1,3 +1,12 @@
+## [1.1.4](https://github.com/jcbmcn/example-service/compare/v1.1.3...v1.1.4) (2025-11-26)
+
+
+### Bug Fixes
+
+* **publish.yaml:** update release notes parameter in gh CLI command ([467b9ea](https://github.com/jcbmcn/example-service/commit/467b9ea314d301562c88fc17de11f7eae4151c57))
+
+
+
 ## [1.1.3](https://github.com/jcbmcn/example-service/compare/v1.1.2...v1.1.3) (2025-11-26)
 
 
