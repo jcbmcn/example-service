@@ -52,7 +52,16 @@ jobs:
         uses: docker/setup-buildx-action@v3
 
       - name: Determine release version
-        run: echo "VERSION=$(git describe --tags --abbrev=0)" >> $GITHUB_ENV
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          VERSION=$(curl -sSf -H "Authorization: Bearer ${GH_TOKEN}" -H "Accept: application/vnd.github+json" \
+            "https://api.github.com/repos/${GITHUB_REPOSITORY}/releases/latest" | jq -r '.tag_name')
+          if [ -z "${VERSION}" ] || [ "${VERSION}" = "null" ]; then
+            echo "Could not determine latest release version" >&2
+            exit 1
+          fi
+          echo "VERSION=${VERSION}" >> $GITHUB_ENV
 
       - name: Set image prefix
         run: |
