@@ -64,7 +64,13 @@ jobs:
         uses: docker/setup-buildx-action@v3
 
       - name: Use release version
-        run: echo "VERSION=${{ needs.release.outputs.new_release_version }}" >> $GITHUB_ENV
+        run: |
+          echo "VERSION=${{ needs.release.outputs.new_release_version }}" >> $GITHUB_ENV
+          TAG="${{ needs.release.outputs.new_release_git_tag }}"
+          if [ -z "${TAG}" ] || [ "${TAG}" = "null" ]; then
+            TAG="v${{ needs.release.outputs.new_release_version }}"
+          fi
+          echo "TAG=${TAG}" >> $GITHUB_ENV
 
       - name: Set image prefix
         run: |
@@ -103,8 +109,21 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          RELEASE_DATA=$(curl -sSf -H "Authorization: Bearer ${GH_TOKEN}" -H "Accept: application/vnd.github+json" \
-            "https://api.github.com/repos/${GITHUB_REPOSITORY}/releases/tags/${VERSION}")
+          set -euo pipefail
+          fetch_release() {
+            local tag="$1"
+            curl -sSf -H "Authorization: Bearer ${GH_TOKEN}" -H "Accept: application/vnd.github+json" \
+              "https://api.github.com/repos/${GITHUB_REPOSITORY}/releases/tags/${tag}"
+          }
+
+          RELEASE_DATA="$(fetch_release "${TAG}")" || {
+            ALT_TAG="v${VERSION}"
+            RELEASE_DATA="$(fetch_release "${ALT_TAG}")" || {
+              echo "Unable to find release for tags '${TAG}' or '${ALT_TAG}'" >&2
+              exit 1
+            }
+          }
+
           RELEASE_ID=$(echo "${RELEASE_DATA}" | jq -r '.id')
           RELEASE_BODY=$(echo "${RELEASE_DATA}" | jq -r '.body // ""')
           IMAGES_SECTION=$'Images published:\n- '"${IMAGE_PREFIX}:blue"$'\n- '"${IMAGE_PREFIX}:blue-${VERSION}"$'\n- '"${IMAGE_PREFIX}:green"$'\n- '"${IMAGE_PREFIX}:green-${VERSION}"
