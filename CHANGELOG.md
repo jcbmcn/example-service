@@ -1,3 +1,12 @@
+## [1.1.6](https://github.com/jcbmcn/example-service/compare/v1.1.5...v1.1.6) (2025-11-26)
+
+
+### Bug Fixes
+
+* **publish.yaml:** add fetch tags step before creating/updating release ([b610ea8](https://github.com/jcbmcn/example-service/commit/b610ea802d69a35ad3014da99ede1e791873f622))
+
+
+
 ## [1.1.5](https://github.com/jcbmcn/example-service/compare/v1.1.4...v1.1.5) (2025-11-26)
 
 
@@ -31,15 +40,6 @@
 ### Bug Fixes
 
 * **publish.yaml:** add token to checkout step for authentication ([6ac0cf2](https://github.com/jcbmcn/example-service/commit/6ac0cf27bc43fd7726f6a15f88b3a5309780f680))
-
-
-
-## [1.1.1](https://github.com/jcbmcn/example-service/compare/v1.1.0...v1.1.1) (2025-11-26)
-
-
-### Bug Fixes
-
-* **publish.yaml:** add token to release action for authentication ([15f890b](https://github.com/jcbmcn/example-service/commit/15f890babed9ca5dda8cd758c17b6f1119d3adfe))
 
 
 
