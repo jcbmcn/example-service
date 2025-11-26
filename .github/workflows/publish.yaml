@@ -62,6 +62,7 @@ jobs:
             ghcr.io/${{ github.repository }}:blue-${{ needs.release.outputs.version }}
             ghcr.io/${{ github.repository }}:blue
             ghcr.io/${{ github.repository }}:latest
+            
   build-green:
     needs: release
     if: needs.release.outputs.version
