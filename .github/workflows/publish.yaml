@@ -8,6 +8,8 @@ on:
 jobs:
   version:
     runs-on: ubuntu-24.04
+    permissions:
+      contents: write
     outputs:
       version: ${{ steps.changelog.outputs.version }}
       tag: ${{ steps.changelog.outputs.tag }}
