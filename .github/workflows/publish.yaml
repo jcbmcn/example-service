@@ -86,13 +86,16 @@ jobs:
       contents: write
     steps:
       - name: Create/update release
-        uses: ncipollo/release-action@v1
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-          tag: ${{ needs.version.outputs.tag }}
-          name: ${{ needs.version.outputs.tag }}
-          allowUpdates: true
-          body: |
-            Images published:
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh release create "${{ needs.version.outputs.tag }}" \
+            --title "${{ needs.version.outputs.tag }}" \
+            --body "Images published:
             - ghcr.io/${{ github.repository }}:blue-${{ needs.version.outputs.version }}
-            - ghcr.io/${{ github.repository }}:green-${{ needs.version.outputs.version }}
+            - ghcr.io/${{ github.repository }}:green-${{ needs.version.outputs.version }}" \
+            --latest || gh release edit "${{ needs.version.outputs.tag }}" \
+            --title "${{ needs.version.outputs.tag }}" \
+            --body "Images published:
+            - ghcr.io/${{ github.repository }}:blue-${{ needs.version.outputs.version }}
+            - ghcr.io/${{ github.repository }}:green-${{ needs.version.outputs.version }}"
