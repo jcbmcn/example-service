@@ -1,3 +1,10 @@
+## [1.3.1](https://github.com/jcbmcn/example-service/compare/v1.3.0...v1.3.1) (2025-11-26)
+
+
+### Bug Fixes
+
+* update release message ([a649fdb](https://github.com/jcbmcn/example-service/commit/a649fdbae4be56a86b5f3dd19e5e052859b8d1fb))
+
 # [1.3.0](https://github.com/jcbmcn/example-service/compare/v1.2.4...v1.3.0) (2025-11-26)
 
 
