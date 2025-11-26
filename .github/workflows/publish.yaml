@@ -91,11 +91,11 @@ jobs:
         run: |
           gh release create "${{ needs.version.outputs.tag }}" \
             --title "${{ needs.version.outputs.tag }}" \
-            --body "Images published:
+            --notes "Images published:
             - ghcr.io/${{ github.repository }}:blue-${{ needs.version.outputs.version }}
             - ghcr.io/${{ github.repository }}:green-${{ needs.version.outputs.version }}" \
             --latest || gh release edit "${{ needs.version.outputs.tag }}" \
             --title "${{ needs.version.outputs.tag }}" \
-            --body "Images published:
+            --notes "Images published:
             - ghcr.io/${{ github.repository }}:blue-${{ needs.version.outputs.version }}
             - ghcr.io/${{ github.repository }}:green-${{ needs.version.outputs.version }}"
