@@ -54,7 +54,7 @@ jobs:
         run: echo "VERSION=$(git describe --tags --abbrev=0)" >> $GITHUB_ENV
 
       - name: Build blue image
-        run: docker build --build-arg APP_COLOR=blue -t example-service:blue-${VERSION} .
+        run: docker build --build-arg APP_COLOR=blue -t example-service:blue -t example-service:blue-${VERSION} .
 
       - name: Build green image
-        run: docker build --build-arg APP_COLOR=green -t example-service:green-${VERSION} .
+        run: docker build --build-arg APP_COLOR=green -t example-service:green -t example-service:green-${VERSION} .
