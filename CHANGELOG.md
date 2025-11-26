@@ -1,3 +1,12 @@
+## [1.1.3](https://github.com/jcbmcn/example-service/compare/v1.1.2...v1.1.3) (2025-11-26)
+
+
+### Bug Fixes
+
+* **publish.yaml:** replace release-action with gh CLI for creating/updating releases ([6ade463](https://github.com/jcbmcn/example-service/commit/6ade4639a776fa87d36d79055c840cf5920df3a1))
+
+
+
 ## [1.1.2](https://github.com/jcbmcn/example-service/compare/v1.1.1...v1.1.2) (2025-11-26)
 
 
