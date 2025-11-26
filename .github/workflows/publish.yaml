@@ -6,31 +6,39 @@ on:
   workflow_dispatch:
 
 jobs:
-  version:
-    runs-on: ubuntu-24.04
-    permissions:
-      contents: write
+  release:
+    runs-on: ubuntu-latest
     outputs:
-      version: ${{ steps.changelog.outputs.version }}
-      tag: ${{ steps.changelog.outputs.tag }}
+      version: ${{ steps.semantic.outputs.new_release_version }}
+      tag: ${{ steps.semantic.outputs.new_release_git_tag }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v3
         with:
           fetch-depth: 0
-          token: ${{ secrets.GITHUB_TOKEN }}
-      - name: Configure git
-        run: |
-          git config --global user.email "github-actions[bot]@users.noreply.github.com"
-          git config --global user.name "github-actions[bot]"
-      - id: changelog
-        uses: TriPSs/conventional-changelog-action@v5
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
         with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          skip-commit: false
-          skip-tag: false
+          node-version: 18
+      - name: Install dependencies
+        run: |
+          npm init -y
+          npm install \
+            semantic-release \
+            @semantic-release/git \
+            @semantic-release/changelog \
+            @semantic-release/github \
+            @semantic-release/commit-analyzer \
+            @semantic-release/release-notes-generator \
+            conventional-changelog-conventionalcommits
+      - id: semantic
+        name: Run semantic-release
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: npx semantic-release
 
   build-blue:
-    needs: version
+    needs: release
+    if: needs.release.outputs.version
     runs-on: ubuntu-24.04
     permissions:
       contents: read
@@ -51,11 +59,12 @@ jobs:
             APP_COLOR=blue
           push: true
           tags: |
-            ghcr.io/${{ github.repository }}:blue-${{ needs.version.outputs.version }}
+            ghcr.io/${{ github.repository }}:blue-${{ needs.release.outputs.version }}
             ghcr.io/${{ github.repository }}:blue
             ghcr.io/${{ github.repository }}:latest
   build-green:
-    needs: version
+    needs: release
+    if: needs.release.outputs.version
     runs-on: ubuntu-24.04
     permissions:
       contents: read
@@ -76,35 +85,5 @@ jobs:
             APP_COLOR=green
           push: true
           tags: |
-            ghcr.io/${{ github.repository }}:green-${{ needs.version.outputs.version }}
+            ghcr.io/${{ github.repository }}:green-${{ needs.release.outputs.version }}
             ghcr.io/${{ github.repository }}:green
-
-  release:
-    needs: [version, build-blue, build-green]
-    runs-on: ubuntu-24.04
-    permissions:
-      contents: write
-    steps:
-      - uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-      - name: Fetch all tags
-        run: git fetch --tags
-      - name: Create/update release
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          if gh release view "${{ needs.version.outputs.tag }}" > /dev/null 2>&1; then
-            gh release edit "${{ needs.version.outputs.tag }}" \
-              --title "${{ needs.version.outputs.tag }}" \
-              --notes "Images published:
-              - ghcr.io/${{ github.repository }}:blue-${{ needs.version.outputs.version }}
-              - ghcr.io/${{ github.repository }}:green-${{ needs.version.outputs.version }}"
-          else
-            gh release create "${{ needs.version.outputs.tag }}" \
-              --title "${{ needs.version.outputs.tag }}" \
-              --notes "Images published:
-              - ghcr.io/${{ github.repository }}:blue-${{ needs.version.outputs.version }}
-              - ghcr.io/${{ github.repository }}:green-${{ needs.version.outputs.version }}" \
-              --latest
-          fi
