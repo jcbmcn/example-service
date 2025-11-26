@@ -82,6 +82,7 @@ jobs:
           tags: |
             ${{ env.IMAGE_PREFIX }}:blue
             ${{ env.IMAGE_PREFIX }}:blue-${{ env.VERSION }}
+            ${{ env.IMAGE_PREFIX }}:latest
           build-args: |
             APP_COLOR=blue
 
