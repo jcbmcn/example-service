@@ -87,6 +87,7 @@ jobs:
       - name: Create/update release
         uses: ncipollo/release-action@v1
         with:
+          token: ${{ secrets.GITHUB_TOKEN }}
           tag: ${{ needs.version.outputs.tag }}
           name: ${{ needs.version.outputs.tag }}
           allowUpdates: true
