@@ -1,3 +1,10 @@
+## [1.2.2](https://github.com/jcbmcn/example-service/compare/v1.2.1...v1.2.2) (2025-11-26)
+
+
+### Bug Fixes
+
+* test new release versioning ([76c4f5b](https://github.com/jcbmcn/example-service/commit/76c4f5b3bc3c8318b13ac2028f23bf848c9a880d))
+
 ## [1.2.1](https://github.com/jcbmcn/example-service/compare/v1.2.0...v1.2.1) (2025-11-26)
 
 
