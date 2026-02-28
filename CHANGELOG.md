@@ -1,3 +1,10 @@
+# [1.5.0](https://github.com/jcbmcn/example-service/compare/v1.4.0...v1.5.0) (2026-02-28)
+
+
+### Features
+
+* **observability:** integrate OpenTelemetry with Docker Compose and update environment variables ([6a37497](https://github.com/jcbmcn/example-service/commit/6a3749715e979f47d2444be8ff57b8fe4fa9b331))
+
 # [1.4.0](https://github.com/jcbmcn/example-service/compare/v1.3.2...v1.4.0) (2025-11-26)
 
 
