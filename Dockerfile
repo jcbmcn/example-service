@@ -5,8 +5,6 @@ WORKDIR /app
 
 ARG APP_COLOR
 ENV APP_COLOR=${APP_COLOR}
-ENV OTEL_SERVICE_NAME=example-service
-ENV OTEL_SERVICE_NAMESPACE=example-app
 
 COPY package.json vite.config.js index.html 404.html server.js tracing.js ./
 COPY src ./src
