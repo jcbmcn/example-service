@@ -24,7 +24,7 @@ const logger = winston.createLogger({
 });
 
 // Initialize custom metrics
-const meter = metrics.getMeter('example-service');
+const meter = metrics.getMeter(process.env.OTEL_SERVICE_NAME || 'example-service');
 const httpRequestCounter = meter.createCounter('http.server.requests', {
   description: 'Total number of HTTP requests',
 });
