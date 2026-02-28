@@ -4,43 +4,94 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 [![Docker: GHCR](https://img.shields.io/badge/GHCR-ghcr.io%2Fjcbmcn%2Fexample--service-blue)](https://github.com/users/jcbmcn/packages/container/package/example-service)
 
-A small blue/green React + Express demo that serves a themed static build, exposes health/version endpoints, and emits OpenTelemetry traces. Docker images are color-specific via `APP_COLOR`.
+A lightweight blue/green React + Express demo with full OpenTelemetry instrumentation (traces, metrics, and logs). Each Docker image is color-tagged via `APP_COLOR`, and all telemetry configuration is driven entirely by environment variables — nothing is hardcoded in the application.
 
 ![banner_image](assets/banner.png)
 
 ## Purpose
-- Practice blue/green and canary rollouts in Kubernetes by deploying color-tagged images and gradually shifting a percentage of traffic between them.
-- Validate ingress/service routing while observing live traffic splits and error budgets.
-- Collect latency/error metrics and traces via any OpenTelemetry-compatible backend (OTLP export enabled in `tracing.js`).
-- Provide a lightweight sandbox to test deployment strategies and observability wiring before using them on production workloads.
+
+This project is a sandbox for learning and validating deployment strategies and observability patterns. Use it to:
+
+- **Practice blue/green and canary rollouts** — deploy color-tagged images to Kubernetes and gradually shift traffic between them.
+- **Validate ingress and service routing** — observe live traffic splits and error budgets through health/version endpoints.
+- **Explore three-signal observability** — the app emits distributed traces, custom metrics, and structured logs to any OpenTelemetry-compatible backend.
+- **Experiment with structured logging** — Winston logs are correlated with OTel trace/span context automatically via the Winston instrumentation.
+- **Follow 12-factor configuration** — every tunable (collector endpoint, service identity, log level, etc.) is an environment variable, keeping images immutable across environments.
+
+## Tech stack
+
+| Layer | Technology |
+|---|---|
+| Frontend | React 18, Vite |
+| Backend | Node.js 20, Express 4 |
+| Telemetry | OpenTelemetry SDK (traces, metrics, logs), OTLP/HTTP exporters |
+| Logging | Winston (with OTel trace-context injection) |
+| Container | Multi-stage Alpine Docker image |
+| CI/CD | GitHub Actions, semantic-release, GHCR |
 
 ## Endpoints
-- `/` serves the built React app for the configured color.
-- `/health` returns `{"status":"ok","color":"<blue|green>"}`.
-- `/version` echoes the color for quick probes.
-- `/blue` and `/green` serve the respective supernova image (404 if the build color does not match).
+
+| Route | Method | Description |
+|---|---|---|
+| `/` | GET | Serves the built React app for the configured color |
+| `/health` | GET | Returns `{"status":"ok","color":"<blue\|green>"}` |
+| `/version` | GET | Returns `{"version":"<blue\|green>"}` for quick probes |
+| `/blue` | GET | Serves the blue supernova image (404 JSON if the build is green) |
+| `/green` | GET | Serves the green supernova image (404 JSON if the build is blue) |
+| `/*` | GET | Unmatched routes return a custom 404 HTML page (browsers) or JSON error (API clients) |
 
 ## Quickstart
-- Node (local):
-  ```bash
-  npm ci
-  npm run dev        # Vite dev server
-  PORT=3000 APP_COLOR=green npm start  # serve built app with green theme
-  ```
-- Docker Compose (blue on :3001, green on :3002):
-  ```bash
-  docker-compose up --build
-  # Then visit:
-  # http://localhost:3001/health, /version, /blue
-  # http://localhost:3002/health, /version, /green
-  ```
+
+### Local development (front-end only)
+
+```bash
+npm ci
+npm run dev        # starts Vite dev server with HMR
+```
+
+> **Note:** `npm run dev` serves the React front-end only. The Express server
+> (`server.js`) and OpenTelemetry instrumentation are not active in this mode.
+
+### Local production build
+
+```bash
+npm ci
+npm run build                              # build the React app into dist/
+PORT=3000 APP_COLOR=green npm start        # start Express serving the built app
+```
+
+### Docker Compose (blue + green + OTel Collector)
+
+```bash
+docker-compose up --build
+```
+
+This starts three containers:
+
+| Service | URL | Description |
+|---|---|---|
+| `supernova-blue` | http://localhost:3001 | Blue build |
+| `supernova-green` | http://localhost:3002 | Green build |
+| `otel-collector` | — (ports 4317/4318) | Receives OTLP and logs to stdout |
+
+Both app containers are pre-configured to send telemetry to the collector.
+Watch the collector logs to verify traces, metrics, and log records are flowing:
+
+```bash
+docker-compose logs -f otel-collector
+```
 
 ## Containers
-- Build locally: `docker build -t example-service:blue --build-arg APP_COLOR=blue .`
-- Compose both colors: `docker-compose up --build`
-- Pull from GHCR (published by the release workflow):
+
+- **Build locally:**
+  ```bash
+  docker build -t example-service:blue --build-arg APP_COLOR=blue .
+  ```
+- **Compose all services:** `docker-compose up --build`
+- **Pull from GHCR** (published by the release workflow):
   - `ghcr.io/jcbmcn/example-service:blue` and `:blue-<version>`
   - `ghcr.io/jcbmcn/example-service:green` and `:green-<version>`
+  - `ghcr.io/jcbmcn/example-service:latest` (tracks the latest blue build)
 
 ## CI/CD and versioning
 - Conventional Commits drive semantic-release (`.releaserc.json`).
@@ -97,8 +148,44 @@ env:
     value: http://otel-collector.observability.svc.cluster.local:4318
 ```
 
+### Custom metrics
+
+The application emits the following custom metrics via the OpenTelemetry Metrics API:
+
+| Metric | Type | Description |
+|---|---|---|
+| `http.server.requests` | Counter | Total HTTP requests (labels: `method`, `route`, `status`) |
+| `health.checks` | Counter | Total health-check requests (label: `color`) |
+| `http.server.active_requests` | UpDownCounter | Currently in-flight HTTP requests |
+
+### Structured logging
+
+Winston is configured to output JSON logs with the service name attached via
+`defaultMeta`. The `@opentelemetry/instrumentation-winston` package automatically
+injects `trace_id` and `span_id` into every log record, enabling direct
+correlation between logs and distributed traces in your observability backend.
+
 ## Project layout
-- `Dockerfile` multi-stage build honoring `APP_COLOR`
-- `docker-compose.yml` spins up blue and green services
-- `server.js` Express server with health/version routes and image serving
-- `src/` React frontend; `assets/` static images
+
+```
+.
+├── .github/workflows/
+│   └── release.yaml           # CI/CD: semantic-release → Docker build → GHCR push
+├── assets/                    # Static images (supernova PNGs, banner, 404)
+├── src/
+│   ├── App.jsx                # React root component
+│   ├── main.jsx               # React entry point
+│   └── styles.css             # Global styles
+├── 404.html                   # Custom 404 page served to browsers
+├── index.html                 # Vite HTML entry
+├── server.js                  # Express server (routes, middleware, metrics)
+├── tracing.js                 # OpenTelemetry SDK bootstrap (traces, metrics, logs)
+├── otel-collector-config.yaml # OTel Collector config (used by docker-compose)
+├── vite.config.js             # Vite build configuration
+├── Dockerfile                 # Multi-stage build, parameterised by APP_COLOR
+├── docker-compose.yml         # Blue + green services + OTel Collector
+├── .releaserc.json            # semantic-release plugin config
+├── package.json               # Dependencies and scripts
+├── CHANGELOG.md               # Auto-generated changelog
+└── LICENSE                    # MIT license
+```
