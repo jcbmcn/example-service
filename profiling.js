@@ -17,12 +17,8 @@ if (process.env.PYROSCOPE_LABELS) {
 try {
   Pyroscope.init({
     serverAddress,
-    appName,
+    applicationName: appName,
     tags: labels,
-    // Wall time profiling (CPU time for Node.js async model)
-    wall: true,
-    // Heap allocation profiling
-    heap: true,
   });
 
   Pyroscope.start();
