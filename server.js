@@ -1,4 +1,5 @@
 import './tracing.js'; // initialize OpenTelemetry before the app starts
+import './profiling.js'; // initialize Pyroscope continuous profiling
 import express from 'express';
 import path from 'path';
 import { fileURLToPath } from 'url';

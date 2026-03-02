@@ -20,6 +20,7 @@
     "@opentelemetry/sdk-logs": "^0.54.2",
     "@opentelemetry/sdk-node": "^0.54.2",
     "@opentelemetry/semantic-conventions": "^1.24.1",
+    "@pyroscope/nodejs": "^0.4.0",
     "@semantic-release/changelog": "^6.0.3",
     "@semantic-release/commit-analyzer": "^11.1.0",
     "@semantic-release/git": "^10.0.1",
