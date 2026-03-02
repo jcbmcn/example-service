@@ -1,3 +1,16 @@
+# [1.6.0](https://github.com/jcbmcn/example-service/compare/v1.5.0...v1.6.0) (2026-03-02)
+
+
+### Bug Fixes
+
+* **profiling:** improve error logging for Pyroscope initialization failure ([06b45c7](https://github.com/jcbmcn/example-service/commit/06b45c70749d186f638720666321584f05159273))
+
+
+### Features
+
+* **dependencies:** add @pyroscope/nodejs and @datadog/pprof packages to package-lock.json ([a25210b](https://github.com/jcbmcn/example-service/commit/a25210b48870201d94e5ece635bae8e6aeddb579))
+* **profiling:** add Pyroscope integration for continuous profiling and update Dockerfile ([b98c43b](https://github.com/jcbmcn/example-service/commit/b98c43bf821969f9902d59fd8b43835f5e840dc6))
+
 # [1.5.0](https://github.com/jcbmcn/example-service/compare/v1.4.0...v1.5.0) (2026-02-28)
 
 
