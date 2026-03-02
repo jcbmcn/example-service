@@ -6,7 +6,7 @@ WORKDIR /app
 ARG APP_COLOR
 ENV APP_COLOR=${APP_COLOR}
 
-COPY package.json vite.config.js index.html 404.html server.js tracing.js ./
+COPY package.json vite.config.js index.html 404.html server.js tracing.js profiling.js ./
 COPY src ./src
 COPY assets/blue_supernova.png assets/green_supernova.png assets/404.png ./
 COPY .npmrc ./
@@ -24,6 +24,7 @@ ENV APP_COLOR=${APP_COLOR}
 COPY --from=build /app/dist ./dist
 COPY --from=build /app/server.js ./server.js
 COPY --from=build /app/tracing.js ./tracing.js
+COPY --from=build /app/profiling.js ./profiling.js
 COPY --from=build /app/package.json ./package.json
 COPY --from=build /app/.npmrc ./.npmrc
 COPY --from=build /app/node_modules ./node_modules
