@@ -28,5 +28,5 @@ try {
   Pyroscope.start();
   console.log(`Pyroscope profiling started → ${serverAddress} as "${appName}"`);
 } catch (err) {
-  console.error('Failed to initialize Pyroscope profiling:', err.message);
+  console.error('Failed to initialize Pyroscope profiling:', err && (err.stack || err));
 }
