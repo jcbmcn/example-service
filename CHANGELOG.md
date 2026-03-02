@@ -1,3 +1,10 @@
+## [1.6.1](https://github.com/jcbmcn/example-service/compare/v1.6.0...v1.6.1) (2026-03-02)
+
+
+### Bug Fixes
+
+* **profiling:** update Pyroscope initialization parameters for clarity ([f7ab68e](https://github.com/jcbmcn/example-service/commit/f7ab68ec6ad12336ba63b6d4843334929a12ae6f))
+
 # [1.6.0](https://github.com/jcbmcn/example-service/compare/v1.5.0...v1.6.0) (2026-03-02)
 
 
