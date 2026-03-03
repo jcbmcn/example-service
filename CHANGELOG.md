@@ -1,3 +1,10 @@
+# [1.7.0](https://github.com/jcbmcn/example-service/compare/v1.6.1...v1.7.0) (2026-03-03)
+
+
+### Features
+
+* Add load testing script and package configuration ([#41](https://github.com/jcbmcn/example-service/issues/41)) ([6733c8a](https://github.com/jcbmcn/example-service/commit/6733c8a66619634b2e9b28e208a4e9bfcb1a7f9c))
+
 ## [1.6.1](https://github.com/jcbmcn/example-service/compare/v1.6.0...v1.6.1) (2026-03-02)
 
 
